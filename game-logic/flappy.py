@@ -6,7 +6,6 @@ from time import sleep
 
 def main():
     pygame.init()
-    
     bird = flappy_bird.bird()
     pygame_screen = pygame.display.set_mode([const.game_width, const.game_height])
 

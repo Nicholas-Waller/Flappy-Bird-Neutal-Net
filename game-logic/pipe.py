@@ -22,10 +22,10 @@ class pipe:
 
     def bird_collided(self, bird):
         # Convert the "circle" into a rectangle for collision
-        x = bird.x - const.bird_radius + const.bird_margin
-        y = bird.y - const.bird_radius + const.bird_margin
-        w = 2 * const.bird_radius - 2 * const.bird_margin
-        h = w
+        x = bird.x
+        y = bird.y
+        w = const.bird_width
+        h = const.bird_height
 
         if x + w >= self.x and x <= self.x + const.pipe_width: # Check if the bird is within the pipe width
             if y < self.topHeight:
