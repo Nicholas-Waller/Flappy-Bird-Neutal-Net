@@ -1,22 +1,54 @@
 import pygame # Use this module for the main window
 import constants as const
+import bird as flappy_bird
+import pipe
+from time import sleep
 
-pygame.init()
+def main():
+    pygame.init()
+    
+    bird = flappy_bird.bird()
+    pygame_screen = pygame.display.set_mode([const.game_width, const.game_height])
 
-pygame_screen = pygame.display.set_mode([const.gameWidth, const.gameHeight])
+    pipes = []
+    game_running = True
+    i = 0
+    while game_running: 
+        print(len(pipes))
+        game_running = game_cycle(pygame_screen, bird, i % const.pipe_frequency == 0, pipes)
+        sleep(1 / const.framerate) # Update the game {framerate} times a second
+        pygame.display.flip()
+        i += 1
+    pygame.quit
 
-game_running = True
 
-while game_running: 
+# Returns whether the game is in a valid, playable state or not, True or False
+def game_cycle(pygame_screen, bird, create_new_pipe, pipes):
 
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT:
-            game_running = False
+            return False
+        elif event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.K_SPACE:
+            bird.flap()
 
-    pygame_screen.fill((255, 255, 255))
+    if create_new_pipe == True: 
+        print("here")
+        pipes.append(pipe.pipe()) # Create a new pipe
 
-    pygame.draw.circle(pygame_screen, const.birdColour, (250, 250), 30)
+    if bird.hit_something(): 
+        return False
 
-    pygame.display.flip()
+    bird.apply_gravity()
 
-pygame.quit
+    pygame_screen.fill(const.background_colour)
+
+    for p in pipes: 
+        p.move()
+        p.draw(pygame_screen)
+        
+    pygame.draw.rect(pygame_screen, const.grass_green, (0, const.game_height - const.floor_height, const.game_width, const.floor_height))
+    bird.draw(pygame_screen)
+    return True
+
+
+main()
