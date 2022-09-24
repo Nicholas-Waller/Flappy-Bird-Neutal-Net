@@ -12,7 +12,10 @@ pipe_colour = (0, 255, 0)
 
 # Bird properties
 bird_radius = 25
-
+# This setting deals with how "sensitive" the bird is to the pipes. 
+# This is because the bird collision is treated as rectangular, not circular. 
+# The bird's hitbox will be it's radius - margin, treated as a rectangle
+bird_margin = 0
 # Drawing properties
 floor_height = 20
 

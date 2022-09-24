@@ -1,4 +1,5 @@
 import constants as const
+import pipe 
 import pygame
 
 class bird: 
@@ -17,10 +18,10 @@ class bird:
         if self.downwards_force > 0:
             self.downwards_force -= 0.1
 
-    def hit_something(self):
+    def hit_something(self, pipe):
         if self.did_the_bird_hit_the_ceiling(): 
             self.downwards_force *= -1
-        return self.did_the_bird_hit_the_floor()
+        return self.did_the_bird_hit_the_floor() or pipe.bird_collided(self)
 
     def did_the_bird_hit_the_ceiling(self):
         return self.y - const.bird_radius <= 0

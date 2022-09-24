@@ -16,3 +16,22 @@ class pipe:
 
     def move(self):
         self.x -= const.pipe_speed
+
+    def off_screen(self):
+        return self.x + const.pipe_width < 0
+
+    def bird_collided(self, bird):
+        # Convert the "circle" into a rectangle for collision
+        x = bird.x - const.bird_radius + const.bird_margin
+        y = bird.y - const.bird_radius + const.bird_margin
+        w = 2 * const.bird_radius - 2 * const.bird_margin
+        h = w
+
+        if x + w >= self.x and x <= self.x + const.pipe_width: # Check if the bird is within the pipe width
+            if y < self.topHeight:
+                print("hit top pipe")
+                return True
+            elif y + h > self.topHeight + const.pipe_gap: 
+                print("hit bottom pipe")
+                return True
+        return False

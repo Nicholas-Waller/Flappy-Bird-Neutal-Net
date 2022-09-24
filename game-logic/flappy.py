@@ -19,7 +19,7 @@ def main():
         sleep(1 / const.framerate) # Update the game {framerate} times a second
         pygame.display.flip()
         i += 1
-    pygame.quit
+    pygame.quit()
 
 
 # Returns whether the game is in a valid, playable state or not, True or False
@@ -32,10 +32,9 @@ def game_cycle(pygame_screen, bird, create_new_pipe, pipes):
             bird.flap()
 
     if create_new_pipe == True: 
-        print("here")
         pipes.append(pipe.pipe()) # Create a new pipe
 
-    if bird.hit_something(): 
+    if bird.hit_something(pipes[0]): 
         return False
 
     bird.apply_gravity()
@@ -45,10 +44,11 @@ def game_cycle(pygame_screen, bird, create_new_pipe, pipes):
     for p in pipes: 
         p.move()
         p.draw(pygame_screen)
-        
+        if p.off_screen() == True:
+            del pipes[0]
+
     pygame.draw.rect(pygame_screen, const.grass_green, (0, const.game_height - const.floor_height, const.game_width, const.floor_height))
     bird.draw(pygame_screen)
     return True
-
-
+    
 main()
