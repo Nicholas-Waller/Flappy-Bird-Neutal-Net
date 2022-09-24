@@ -13,6 +13,7 @@ pipe_colour = (0, 255, 0)
 # Bird properties
 bird_width = 40
 bird_height = 40
+bird_gravity_multiplier = 1.0
 
 # Drawing properties
 floor_height = 20

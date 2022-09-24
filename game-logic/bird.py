@@ -10,14 +10,14 @@ class bird:
         self.downwards_force = 0 # Downwards force will represent how much gravity will change on any given iteration
     
     def flap(self):
-        self.downwards_force = 8
+        self.downwards_force = 8 * const.bird_gravity_multiplier
     
     def apply_gravity(self):
         self.y -= self.downwards_force
-        self.downwards_force -= 0.25
+        self.downwards_force -= 0.25 * const.bird_gravity_multiplier
         # In order to enforce stronger gravity when jumping than falling
         if self.downwards_force > 0: 
-            self.downwards_force -= 0.1
+            self.downwards_force -= 0.1 * const.bird_gravity_multiplier
 
     def hit_something(self, pipe):
         if self.did_the_bird_hit_the_ceiling(): 
