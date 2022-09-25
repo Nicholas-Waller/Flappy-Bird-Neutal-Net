@@ -8,9 +8,10 @@ class bird:
         self.x = const.game_width / 6
         self.y = const.game_height / 2
         self.downwards_force = 0 # Downwards force will represent how much gravity will change on any given iteration
+        self.score = 0
     
     def flap(self):
-        self.downwards_force = 8 * const.bird_gravity_multiplier
+        self.downwards_force = const.bird_jump_velocity * const.bird_gravity_multiplier
     
     def apply_gravity(self):
         self.y -= self.downwards_force

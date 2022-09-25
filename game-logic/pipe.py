@@ -9,6 +9,7 @@ class pipe:
         self.x = const.game_width + 100 # Start the pipe off of the screen + a little bit
         self.topHeight = random() * (const.game_height - const.pipe_gap - 50) # Make bottom pipe MINIMUM 50 pixels - floor_height
         self.bottomHeight = const.game_height - self.topHeight - const.pipe_gap
+        self.scored = False
 
     def draw(self, pygame_screen):
         pygame.draw.rect(pygame_screen, const.pipe_colour, (self.x, 0, const.pipe_width, self.topHeight))
@@ -34,4 +35,10 @@ class pipe:
             elif y + h > self.topHeight + const.pipe_gap: 
                 print("hit bottom pipe")
                 return True
+        return False
+
+    def passed_pipe(self, x):
+        if (x > self.x and not self.scored):
+            self.scored = True
+            return True
         return False

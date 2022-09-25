@@ -14,9 +14,11 @@ pipe_colour = (0, 255, 0)
 bird_width = 40
 bird_height = 40
 bird_gravity_multiplier = 1.0
+bird_jump_velocity = 10 # Abstract value representing how high the bird is able to jump
 
 # Drawing properties
 floor_height = 20
+text_placement = (10, 10)
 
 # Pipe properties
 pipe_gap = 200
