@@ -35,9 +35,9 @@ class bird:
         sourceFileDir = os.path.dirname(os.path.abspath(__file__))
         birdImg = pygame.image.load(os.path.join(sourceFileDir, "sprites", "Bird.png"))
         birdImg = pygame.transform.scale(birdImg, (const.bird_width, const.bird_height))
-        birdImg = pygame.transform.rotate(birdImg, applyBounds(self.downwards_force * 10, -80, 80))
+        birdImg = pygame.transform.rotate(birdImg, apply_bounds(self.downwards_force * 10, -80, 80))
         pygame_screen.blit(birdImg, (self.x, self.y))
 
-def applyBounds(val, min, max):
+def apply_bounds(val, min, max):
     return min if min > val else max if max < val else val 
     

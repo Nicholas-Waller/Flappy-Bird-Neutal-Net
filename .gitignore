@@ -1,2 +1,2 @@
-# VS Code ignores
-*/__pycache__ 
+# Ignore __pycache__
+*__pycache__ 

@@ -15,7 +15,6 @@ def main():
     game_running = True
     i = 0
     while game_running: 
-        print(len(pipes))
         game_running = game_cycle(pygame_screen, font_style, bird, i % const.pipe_frequency == 0, pipes)
         sleep(1.0 / const.framerate) # Update the game {framerate} times a second
         pygame.display.flip()
