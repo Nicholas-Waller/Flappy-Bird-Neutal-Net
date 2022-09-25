@@ -2,9 +2,14 @@ import pygame # Use this module for the main window
 import constants as const
 import bird as flappy_bird
 import pipe
+import NeuralNet.Matrix.MatrixTest as testRunner
+from NeuralNet.Matrix.Matrix import Matrix as Matrix
 from time import sleep
 
 def main():
+    print("----------Testing Matrix Library for Code Integrity------------")
+    testRunner.run_tests()
+    print("Tests passed! Starting Flappy Bird Neural Net")
     pygame.init()
     pygame.font.init()
     font_style = pygame.font.SysFont('Comic Sans MS', 30)
