@@ -1,6 +1,8 @@
 import constants as const
 import os
 import pygame
+from NeuralNet.Matrix.Matrix import apply_bounds
+
 
 class bird: 
     # Set init bird values
@@ -37,7 +39,3 @@ class bird:
         birdImg = pygame.transform.scale(birdImg, (const.bird_width, const.bird_height))
         birdImg = pygame.transform.rotate(birdImg, apply_bounds(self.downwards_force * 10, -80, 80))
         pygame_screen.blit(birdImg, (self.x, self.y))
-
-def apply_bounds(val, min, max):
-    return min if min > val else max if max < val else val 
-    

@@ -1,4 +1,4 @@
-from NeuralNet.Matrix.Matrix import Matrix as Matrix
+from NeuralNet.Matrix.Matrix import Matrix
 
 def run_tests():
     test_copy()
@@ -14,6 +14,9 @@ def test_copy():
     newMatrix = Matrix(matrix)
     newMatrix.print_matrix("Matrix 2")
     assert(matrix.matrix == newMatrix.matrix)
+    matrix = Matrix([1, 2, 3, 4, 5])
+    matrix.print_matrix("Matrix from array")
+    assert(matrix.matrix == [[1], [2], [3], [4], [5]])
 
 def test_addition():
     expected_matrix = [[15, 15, 15], [15, 18, 21], [15, 15, 15]]

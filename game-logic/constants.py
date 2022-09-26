@@ -25,3 +25,8 @@ pipe_gap = 175
 pipe_speed = 3
 pipe_frequency = 150 # After how many frames should a new pipe be created
 pipe_width = 50
+
+# Neural Network
+neural_network_enabled = False
+sensitivity = 0.5  # A value between 0 and 1. This value represents how confident the bird has to be to flap. Eg if it's 72% confident it should flap, sensitivity should be 0.72 or below
+max_mutation = 0.05 # The max mutation any given element in an iteration can have. Recommended max is 0.1

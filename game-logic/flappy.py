@@ -3,7 +3,7 @@ import constants as const
 import bird as flappy_bird
 import pipe
 import NeuralNet.Matrix.MatrixTest as testRunner
-from NeuralNet.Matrix.Matrix import Matrix as Matrix
+from NeuralNet.Matrix.Matrix import Matrix
 from time import sleep
 
 def main():

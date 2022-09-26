@@ -1,4 +1,5 @@
 import random
+import math
 
 class Matrix: 
     def __init__(self, *args): 
@@ -17,8 +18,14 @@ class Matrix:
         elif isinstance(args[0], type([])): # If it's an array, ONLY an array (corresponding to a matrix) was passed in.
             matrix = args[0]
             self.rows = len(matrix)
-            self.cols = len(matrix[0])
-            self.matrix = [ [ matrix[i][j] for j in range( self.cols ) ] for i in range( self.rows ) ]
+            if isinstance(matrix[0], type([])):
+                self.cols = len(matrix[0])
+                self.matrix = [ [ matrix[i][j] for j in range( self.cols ) ] for i in range( self.rows ) ]
+            else: # Make the matrix ve "vertical" rather than "horizontal"
+                self.cols = 1
+                self.matrix = [ [ matrix[i] for j in range( self.cols ) ] for i in range( self.rows ) ]
+
+                
 
     # Init the matrix to random numbers between 0 and 1
     def init_matrix(self):
@@ -28,11 +35,11 @@ class Matrix:
         self.matrix = [ [ random.random() for y in range( self.cols ) ] for x in range( self.rows ) ]
 
     # Set all values in the matrix to 'n', used for testing
-    def set_all_vals_to_number(self, n):
+    def set_all_vals_to_number(self, n: int):
         self.matrix = [ [ n for y in range( self.cols ) ] for x in range( self.rows ) ]
 
     # Print the matrix
-    def print_matrix(self, matrix_name):
+    def print_matrix(self, matrix_name: str):
         print(f"{matrix_name} Properties:")
         print(f"  Matrix Rows: {self.rows}\n  Matrix Columns: {self.cols}")
         print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
@@ -53,18 +60,24 @@ class Matrix:
         elif isinstance(args[0], int):
             self.matrix = [ [ args[0] + self.matrix[i][j] for j in range( self.cols ) ] for i in range( self.rows ) ]
 
+    def apply_sigmoid(self):
+        self.matrix = [ [ math.exp(self.matrix[i][j]) / (1 + math.exp(self.matrix[i][j])) for j in range( self.cols ) ] for i in range( self.rows ) ]
+
+    # Adds or subtracts a random number between 0 - val to each member of the matrix
+    def mutate(self, val: float):
+        self.matrix = [ [ apply_bounds(self.matrix[i][j] + ((random.random() * (val * 2)) - val), -1, 1) for j in range( self.cols ) ] for i in range( self.rows ) ]        
+
     # Multiply either returns
     #  1. The result of matrix multiplication between 2 matrices. The rows of A must be equal to the columns of B.
     #     Note: This takes advantage of temporal locality. 
     #  2. The matrix multiplied by a static integer. 
     def multiply(self, *args):
         if isinstance(args[0], Matrix):
-            if self.rows != args[0].cols:
-                print("Rows of A do not match cols of B")
+            if self.cols != args[0].rows:
+                print("Cols of A do not match rows of B")
                 return []
             matrix = args[0]
             newMatrix = Matrix(self.rows, matrix.cols)
-            newMatrix.print_matrix("DEBUG")
             for i in range(self.rows):
                 for k in range(self.cols):
                     for j in range(matrix.cols):
@@ -74,4 +87,5 @@ class Matrix:
         elif isinstance(args[0], int):
             return [ [ args[0] * self.matrix[i][j] for j in range( self.cols ) ] for i in range( self.rows ) ]
         
-
+def apply_bounds(val: float, min: float, max: float):
+    return min if min > val else max if max < val else val 
