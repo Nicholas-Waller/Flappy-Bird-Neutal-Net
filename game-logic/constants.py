@@ -21,16 +21,16 @@ floor_height = 20
 text_placement = (10, 10)
 
 # Pipe properties
-pipe_gap = 175
+pipe_gap = 200
 pipe_speed = 3
 pipe_frequency = 150 # After how many frames should a new pipe be created
 pipe_width = 50
 
 # Neural Network
 neural_network_enabled = True
-sensitivity = 0.5  # A value between 0 and 1. This value represents how confident the bird has to be to flap. Eg if it's 72% confident it should flap, sensitivity should be 0.72 or below
+network_sensitivity = 0.7  # A value between 0 and 1. This value represents how confident the bird has to be to flap. Eg if it's 72% confident it should flap, sensitivity should be 0.72 or below
 max_mutation = 0.1 # The max mutation any given element in an iteration can have. Recommended max is 0.1
 mutation_chance = 0.1
-hidden_nodes = 10
-num_birds = 1000
+hidden_nodes = 5
+num_birds = 500
 birds_to_duplicate = 250 # Note: This has to be a factor of num_birds

@@ -49,9 +49,10 @@ class bird:
     def think(self, closest_pipe):
         inputs = []
         inputs.append(self.y / const.game_height)
-        inputs.append((closest_pipe.x - self.x + const.pipe_width) / const.game_width)
-        inputs.append(closest_pipe.top_height / const.game_height)
-        inputs.append((closest_pipe.top_height + const.pipe_gap) / const.game_height)
-        # inputs.append(-self.downwards_force / 15) # Just divide by 10 because that's close-ish to the max value 
+        inputs.append((closest_pipe.x - self.x + const.bird_width) / const.game_width)
+        inputs.append((self.y - closest_pipe.top_height) / const.game_height)
+        inputs.append((self.y - (closest_pipe.top_height + const.pipe_gap)) / const.game_height)
+        # inputs.append(self.downwards_force / (const.bird_jump_velocity * 1.5)) # Just divide by 10 because that's close-ish to the max value 
+        # inputs.append((const.game_height - (self.x - (const.game_height - const.floor_height))) / const.game_height) # How far from the floor
         return self.brain.think(inputs)
         

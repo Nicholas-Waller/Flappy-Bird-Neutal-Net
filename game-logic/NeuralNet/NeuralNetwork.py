@@ -14,12 +14,10 @@ class NeuralNetwork:
         self.weights_hidden_output = Matrix(self.output_nodes, self.hidden_nodes)
         self.weights_hidden_output.randomize()
 
-        bias_hidden = Matrix(self.hidden_nodes, 1)
-        bias_output = Matrix(self.output_nodes, 1)
-        bias_hidden.randomize()
-        self.bias_hidden = bias_hidden.multiply(0.5)
-        bias_output.randomize()
-        self.bias_output = bias_output.multiply(0.5)
+        self.bias_hidden = Matrix(self.hidden_nodes, 1)
+        self.bias_output = Matrix(self.output_nodes, 1)
+        self.bias_hidden.randomize()
+        self.bias_output.randomize()
     
     def copy(self):
         new_network = NeuralNetwork(self.input_nodes, self.hidden_nodes, self.output_nodes)
