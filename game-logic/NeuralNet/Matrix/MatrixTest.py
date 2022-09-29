@@ -60,5 +60,3 @@ def test_matrix_multiplication():
     assert(result.rows == 2)
     assert(result.cols == 2)
     assert(result.matrix == expected_result)
-
-run_tests()

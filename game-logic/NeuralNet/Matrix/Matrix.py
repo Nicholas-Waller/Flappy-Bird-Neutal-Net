@@ -25,14 +25,12 @@ class Matrix:
                 self.cols = 1
                 self.matrix = [ [ matrix[i] for j in range( self.cols ) ] for i in range( self.rows ) ]
 
-                
-
     # Init the matrix to random numbers between 0 and 1
     def init_matrix(self):
         self.matrix = [ [ 0 for y in range( self.cols ) ] for x in range( self.rows ) ]
 
     def randomize(self):
-        self.matrix = [ [ random.random() for y in range( self.cols ) ] for x in range( self.rows ) ]
+        self.matrix = [ [ random.random() * 2 - 1 for y in range( self.cols ) ] for x in range( self.rows ) ]
 
     # Set all values in the matrix to 'n', used for testing
     def set_all_vals_to_number(self, n: int):
@@ -60,12 +58,16 @@ class Matrix:
         elif isinstance(args[0], int):
             self.matrix = [ [ args[0] + self.matrix[i][j] for j in range( self.cols ) ] for i in range( self.rows ) ]
 
-    def apply_sigmoid(self):
-        self.matrix = [ [ math.exp(self.matrix[i][j]) / (1 + math.exp(self.matrix[i][j])) for j in range( self.cols ) ] for i in range( self.rows ) ]
+    def apply_activation_function(self, func):
+        self.matrix = [ [ func(self.matrix[i][j]) for j in range( self.cols ) ] for i in range( self.rows ) ]
 
     # Adds or subtracts a random number between 0 - val to each member of the matrix
-    def mutate(self, val: float):
-        self.matrix = [ [ apply_bounds(self.matrix[i][j] + ((random.random() * (val * 2)) - val), -1, 1) for j in range( self.cols ) ] for i in range( self.rows ) ]        
+    def mutate(self, val: float, chance):
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if random.random() < chance:
+                    # this will change the value by at most + - val
+                    self.matrix[i][j] += random.random() * val * 2 - val
 
     # Multiply either returns
     #  1. The result of matrix multiplication between 2 matrices. The rows of A must be equal to the columns of B.
@@ -84,7 +86,7 @@ class Matrix:
                         newMatrix.matrix[i][j] += self.matrix[i][k] * matrix.matrix[k][j]
             return newMatrix
 
-        elif isinstance(args[0], int):
+        elif isinstance(args[0], float) or isinstance(args[0], int):
             return [ [ args[0] * self.matrix[i][j] for j in range( self.cols ) ] for i in range( self.rows ) ]
         
 def apply_bounds(val: float, min: float, max: float):

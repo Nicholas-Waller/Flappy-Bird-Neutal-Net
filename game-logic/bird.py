@@ -1,8 +1,8 @@
 import constants as const
-import os
 import pygame
+from pipe import pipe 
 from NeuralNet.Matrix.Matrix import apply_bounds
-
+from NeuralNet.NeuralNetwork import NeuralNetwork as neural_net
 
 class bird: 
     # Set init bird values
@@ -11,7 +11,15 @@ class bird:
         self.y = const.game_height / 2
         self.downwards_force = 0 # Downwards force will represent how much gravity will change on any given iteration
         self.score = 0
+        self.frames_lived = 0
+        if const.neural_network_enabled == True:
+            self.brain = neural_net(4, const.hidden_nodes, 1)
     
+    def copy(self):
+        new_bird = bird()
+        new_bird.brain = self.brain.copy()
+        return new_bird
+
     def flap(self):
         self.downwards_force = const.bird_jump_velocity * const.bird_gravity_multiplier
     
@@ -25,6 +33,7 @@ class bird:
     def hit_something(self, pipe):
         if self.did_the_bird_hit_the_ceiling(): 
             self.downwards_force *= -1 # If it hit the ceiling, reverse it's gravitational direction
+            self.y = 0
         return self.did_the_bird_hit_the_floor() or pipe.bird_collided(self)
 
     def did_the_bird_hit_the_ceiling(self):
@@ -33,9 +42,16 @@ class bird:
     def did_the_bird_hit_the_floor(self):
         return self.y + const.bird_height > const.game_height - const.floor_height
 
-    def draw(self, pygame_screen): 
-        sourceFileDir = os.path.dirname(os.path.abspath(__file__))
-        birdImg = pygame.image.load(os.path.join(sourceFileDir, "sprites", "Bird.png"))
-        birdImg = pygame.transform.scale(birdImg, (const.bird_width, const.bird_height))
-        birdImg = pygame.transform.rotate(birdImg, apply_bounds(self.downwards_force * 10, -80, 80))
-        pygame_screen.blit(birdImg, (self.x, self.y))
+    def draw(self, pygame_screen, bird_img): 
+        bird_img = pygame.transform.rotate(bird_img, apply_bounds(self.downwards_force * 10, -80, 80))
+        pygame_screen.blit(bird_img, (self.x, self.y))
+
+    def think(self, closest_pipe):
+        inputs = []
+        inputs.append(self.y / const.game_height)
+        inputs.append((closest_pipe.x - self.x + const.pipe_width) / const.game_width)
+        inputs.append(closest_pipe.top_height / const.game_height)
+        inputs.append((closest_pipe.top_height + const.pipe_gap) / const.game_height)
+        # inputs.append(-self.downwards_force / 15) # Just divide by 10 because that's close-ish to the max value 
+        return self.brain.think(inputs)
+        
