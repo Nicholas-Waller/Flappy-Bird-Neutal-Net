@@ -1,6 +1,7 @@
 from random import random
 import pygame
-import constants as const
+import Constants as const
+from NeuralNet.Matrix.Matrix import apply_bounds as bound
 
 # Misleading, but this is a SET of pipes, top and bottom.
 class pipe:
@@ -11,8 +12,8 @@ class pipe:
         self.scored = False
 
     def draw(self, pygame_screen):
-        pygame.draw.rect(pygame_screen, const.pipe_colour, (self.x, 0, const.pipe_width, self.top_height))
-        pygame.draw.rect(pygame_screen, const.pipe_colour, (self.x, const.game_height - self.bottom_height, const.pipe_width, self.bottom_height))
+        pygame.draw.rect(pygame_screen, const.pipe_colour, (self.x, 0, bound(const.game_width - self.x, 0, const.pipe_width), self.top_height))
+        pygame.draw.rect(pygame_screen, const.pipe_colour, (self.x, const.game_height - self.bottom_height, bound(const.game_width - self.x, 0, const.pipe_width), self.bottom_height))
 
     def move(self):
         self.x -= const.pipe_speed

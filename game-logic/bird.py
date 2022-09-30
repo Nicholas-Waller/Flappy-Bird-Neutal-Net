@@ -1,10 +1,10 @@
-import constants as const
+import Constants as const
 import pygame
-from pipe import pipe 
+from Pipe import pipe 
 from NeuralNet.Matrix.Matrix import apply_bounds
 from NeuralNet.NeuralNetwork import NeuralNetwork as neural_net
 
-class bird: 
+class Bird: 
     # Set init bird values
     def __init__(self):
         self.x = const.game_width / 6
@@ -16,7 +16,7 @@ class bird:
             self.brain = neural_net(4, const.hidden_nodes, 1)
     
     def copy(self):
-        new_bird = bird()
+        new_bird = Bird()
         new_bird.brain = self.brain.copy()
         return new_bird
 
@@ -56,3 +56,11 @@ class bird:
         # inputs.append((const.game_height - (self.x - (const.game_height - const.floor_height))) / const.game_height) # How far from the floor
         return self.brain.think(inputs)
         
+def init_birds_array():
+    birds = []
+    if const.neural_network_enabled == False:
+        birds.append(Bird())
+    else:
+        for _ in range(0, const.num_birds): 
+            birds.append(Bird())
+    return birds

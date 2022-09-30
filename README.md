@@ -3,7 +3,7 @@
 This is my second attempt at creating a basic neural network to play the classic game "Flappy Bird". The neural network uses the "NEAT" technique. This means that a large amount of birds are created, and the ones that preform the best have a significantly higher chance of reproducing. Eventually, in theory, the birds should have "evolved" in order to play the game to a super-human level. No backpropogation takes place using this method, as there's no "expected result". (AKA, this is just simulating evolution, rather than properly "training" the bird) 
 
 ## Constants
-All constants for the game are defined in game-logic/constants.py. There are a few notable ones to mention
+All constants for the game are defined in game-logic/Constants.py. There are a few notable ones to mention
 
 | Name of Constant        | Description                                                                            | Default Value |
 | :---                    |    :----:                                                                              |          ---: |

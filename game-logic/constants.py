@@ -1,5 +1,6 @@
 game_width = 500
 game_height = 800
+menu_width = 300
 framerate = 60
 
 # Colours
@@ -18,7 +19,6 @@ bird_jump_velocity = 8 # Abstract value representing how high the bird is able t
 
 # Drawing properties
 floor_height = 20
-text_placement = (10, 10)
 
 # Pipe properties
 pipe_gap = 200
@@ -33,4 +33,4 @@ max_mutation = 0.1 # The max mutation any given element in an iteration can have
 mutation_chance = 0.1
 hidden_nodes = 5
 num_birds = 500
-birds_to_duplicate = 250 # Note: This has to be a factor of num_birds
+speed_multiplier = 10
