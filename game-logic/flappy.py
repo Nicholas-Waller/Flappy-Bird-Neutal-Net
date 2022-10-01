@@ -1,3 +1,4 @@
+from math import inf
 import pygame # Use this module for the main window
 import Constants as const
 import Bird
@@ -19,20 +20,23 @@ def main():
     sliders = init_sliders() if const.neural_network_enabled else []
     pipes, dead_birds = [], []
     game_running = True
-    frames_total_count = 0
-
+    time_since_last_pipe = inf
+    for slider in sliders:
+        slider.func(slider.get_val())
     while game_running: 
         for _ in range(const.speed_multiplier):
             if game_running:
-                if frames_total_count % const.pipe_frequency == 0: 
-                    pipes.append(pipe.pipe()) # Create a new pipe
-                frames_total_count += 1
+                if time_since_last_pipe >= const.pipe_frequency: 
+                    pipes.append(pipe.pipe()) # Create a new pipe\
+                    time_since_last_pipe = 0
+                else:
+                    time_since_last_pipe += 1
                 move_pipes(pipes)
 
                 if const.neural_network_enabled == True:
                     game_running = neural_network_game_cycle(birds, dead_birds, pipes)
                     if len(birds) == 0:
-                        frames_total_count = 0
+                        time_since_last_pipe = inf
                         max_score, max_gen = (dead_birds[-1].score, current_generation) if dead_birds[-1].score >= max_score else (max_score, max_gen)
                         current_generation += 1
                         birds = new_gen(dead_birds)
@@ -119,7 +123,7 @@ def init_sliders():
     sliders.append(Slider((const.game_width + 10, 10, 200, 20), 1, 100, 1, 1, "Speed Multiplier", edit_speed_multiplier))
     sliders.append(Slider((const.game_width + 10, 50, 200, 20), 1, 500, 1, 250, "Number of birds to duplicate", edit_num_birds))
     sliders.append(Slider((const.game_width + 10, 90, 200, 20), 100, 400, 10, const.pipe_gap, "Pipe Gap", edit_pipe_gap))
-    sliders.append(Slider((const.game_width + 10, 130, 200, 20), 50, 250, 10, const.pipe_frequency, "Pipe Frequency", edit_pipe_freq))
+    sliders.append(Slider((const.game_width + 10, 130, 200, 20), 50, int(const.game_width / const.pipe_speed), 10, const.pipe_frequency, "Pipe Frequency", edit_pipe_freq))
     sliders.append(Slider((const.game_width + 10, 170, 200, 20), 2, 15, 1, const.bird_jump_velocity, "Bird Jump Velocity", edit_bird_jump_velocity))
     sliders.append(Slider((const.game_width + 10, 210, 200, 20), 1, 100, 1, const.mutation_chance * 100, "Mutation Chance", edit_mutation_chance))
     sliders.append(Slider((const.game_width + 10, 250, 200, 20), 1, 100, 1, const.mutation_factor * 100, "Mutation Factor", edit_mutation_factor))
