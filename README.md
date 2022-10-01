@@ -17,15 +17,23 @@ All constants for the game are defined in game-logic/Constants.py. There are a f
 | :---                    |    :----:                                                                              |          ---: |
 | Game Height             | This is the height of the game screen                                                  | 500           |
 | Game Width              | This is the width of the game screen                                                   | 800           |
-| framerate               | This is the framerate that the game is played at. Note: Other vars might need adjusted | 60            |
+| Menu Width  | This is the width of the menu. It is recommended you do not make this value lower since many values in the menu are hard coded | 500
+| Framerate               | This is the framerate that the game is played at. Note: Other vars might need adjusted | 60            |
 | Bird Width              | This is the width of the bird                                                          | 40            |
 | Bird Height             | This is the height of the bird                                                         | 40            |
 | Bird Gravity Multiplier | This is used in case you make the screen taller. Use this to make the bird fall faster | 1.0           |
 | Bird Jump Velocity      | This is an arbitrary value which defines how "powerful" the birds jump is.             | 8             |
 | Pipe Gap                | This is the gap, in pixels between the top pipe and the bottom pipe                    | 175           |
 | Pipe Speed              | This is how many pixels the pipe moves on any given frame                              | 3             |
-| Pipe Freq               | This is how many frames must take place before a new pipe is created                   | 150           |
+| Pipe Frequency               | This is how many frames that will occur before a new pipe is created                   | 150           |
 | Pipe Width              | This is how wide each given pipe is, in pixels                                         | 50            |
+| Neural Network Enabled | ***This defines whether or not the neural network will be used. Please set the value to your desired value*** | False
+| Network Sensitivity | This is a value between 0 and 1, which defines how confident any given bird has to be to flap. Eg. 0.7 means that the bird must be 70% sure it has to jump for it to jump. | 0.7
+| Mutation Factor | The max mutation any given element can have to any given weight when the weights are being mutated | 0.1
+| Mutation Chance | The chance that a mutation will occur after all birds are dead | 0.1
+| Hidden Nodes | The amount of hidden nodes that the given network will have. | 5
+| Num Birds | The number of birds to duplicate after all birds are dead. Note: The higher the value, the more laggy the game will be | 500
+| Speed multiplier | How much faster the game will go when the neural network is enabled. Used for quick evolution | 1
 
 ## Notes
  - It is known that the sliders are not the most responsive. Sadly, due to Pygame not having an easy built-in slider, I had to custom make a slider. The values/positionings are slightly off, and this is known. 
