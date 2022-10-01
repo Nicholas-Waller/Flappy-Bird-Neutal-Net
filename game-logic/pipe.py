@@ -29,11 +29,7 @@ class pipe:
         h = const.bird_height
 
         if x + w >= self.x and x <= self.x + const.pipe_width: # Check if the bird is within the pipe width
-            if y < self.top_height:
-                print("hit top pipe")
-                return True
-            elif y + h > self.top_height + const.pipe_gap: 
-                print("hit bottom pipe")
+            if y < self.top_height or y + h > self.top_height + const.pipe_gap:
                 return True
         return False
 

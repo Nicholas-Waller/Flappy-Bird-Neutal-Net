@@ -61,6 +61,6 @@ def init_birds_array():
     if const.neural_network_enabled == False:
         birds.append(Bird())
     else:
-        for _ in range(0, const.num_birds): 
+        for _ in range(const.num_birds): 
             birds.append(Bird())
     return birds

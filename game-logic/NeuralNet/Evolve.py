@@ -13,7 +13,7 @@ def create_new_generation(dead_birds):
         temp_bird = pick_a_bird(dead_birds, total) 
         temp_bird_mutated = temp_bird.copy()
         temp_brain = temp_bird_mutated.brain
-        temp_brain.mutate(const.max_mutation, const.mutation_chance)
+        temp_brain.mutate(const.mutation_factor, const.mutation_chance)
         temp_bird_mutated.brain = temp_brain
         birds.append(temp_bird_mutated)
     return birds

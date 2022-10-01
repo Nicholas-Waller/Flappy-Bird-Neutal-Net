@@ -18,3 +18,12 @@ All constants for the game are defined in game-logic/Constants.py. There are a f
 | Pipe Speed              | This is how many pixels the pipe moves on any given frame                              | 3             |
 | Pipe Freq               | This is how many frames must take place before a new pipe is created                   | 150           |
 | Pipe Width              | This is how wide each given pipe is, in pixels                                         | 50            |
+
+## Notes
+It is known that the sliders are not the most responsive. Sadly, due to Pygame not having an easy built-in slider, I had to custom make a slider. The values/positionings are slightly off, and this is known. 
+
+## Possible Improvements / Bugs Known
+ - Update slider to be more responsive.
+ - Implement multithreading for the matrix calculations that the birds are doing so that the game doesn't lag as severly when there are a large amount of birds.
+ - When updating "pipe freq", it may make the pipe come to you significantly faster than expected, or significantly slower, depending on the current frame count. 
+ - When updating "pipe gap", the gap will not apply visually to the current pipe, but it will apply in practice. E.g. if you update the gap to be larger, it might look like the birds clip through the pipe because they're assuming that the pipe has a larger gap than it does. 

@@ -1,6 +1,6 @@
 game_width = 500
 game_height = 800
-menu_width = 300
+menu_width = 500
 framerate = 60
 
 # Colours
@@ -19,6 +19,7 @@ bird_jump_velocity = 8 # Abstract value representing how high the bird is able t
 
 # Drawing properties
 floor_height = 20
+slider_margin = 2
 
 # Pipe properties
 pipe_gap = 200
@@ -29,7 +30,7 @@ pipe_width = 50
 # Neural Network
 neural_network_enabled = True
 network_sensitivity = 0.7  # A value between 0 and 1. This value represents how confident the bird has to be to flap. Eg if it's 72% confident it should flap, sensitivity should be 0.72 or below
-max_mutation = 0.1 # The max mutation any given element in an iteration can have. Recommended max is 0.1
+mutation_factor = 0.1 # The max mutation any given element in an iteration can have. Recommended max is 0.1
 mutation_chance = 0.1
 hidden_nodes = 5
 num_birds = 500

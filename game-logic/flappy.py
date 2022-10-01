@@ -6,15 +6,17 @@ import os
 import NeuralNet.Matrix.MatrixTest as matrix_test_runner
 from time import sleep
 from NeuralNet.Evolve import create_new_generation as new_gen
+from Slider import Slider 
+from Slider import edit_num_birds, edit_speed_multiplier, edit_pipe_gap, edit_pipe_freq, edit_bird_jump_velocity, edit_mutation_chance, edit_mutation_factor
 
 def main():
     current_generation, max_score, max_gen = 1, 0, 1
 
     verify_matrix_integrity()
-    pygame_font_style, pygame_screen, bird_img = init_pygame_settings()
+    pygame_font_style, pygame_screen, bird_img, slider_font_style = init_pygame_settings()
 
     birds = Bird.init_birds_array() # Create the array of birds if the neural network is enabled. 
-
+    sliders = init_sliders() if const.neural_network_enabled else []
     pipes, dead_birds = [], []
     game_running = True
     frames_total_count = 0
@@ -40,7 +42,9 @@ def main():
                     game_running = game_cycle(birds[0], pipes)
 
         # Make sure draw_screen is outside of the speed multiplier. If it is in, speed_multiplier is useless. 
-        draw_screen(pygame_screen, pipes, birds, bird_img, pygame_font_style)
+        max_score, max_generation = (max_score, max_generation) if max_score > birds[0].score else (birds[0].score, current_generation)
+
+        draw_screen(pygame_screen, pipes, birds, bird_img, pygame_font_style, sliders, slider_font_style, max_score, max_gen, current_generation)
 
     pygame.quit()
 
@@ -53,7 +57,8 @@ def neural_network_game_cycle(birds, dead_birds, pipes):
     scored = pipes[0].passed_pipe(birds[0].x)
 
     i = 0
-    while i < len(birds):
+    birds_length = len(birds)
+    while i < birds_length:
         bird = birds[i]
         bird.apply_gravity()
 
@@ -65,6 +70,7 @@ def neural_network_game_cycle(birds, dead_birds, pipes):
         if bird.hit_something(pipes[0]):
             dead_birds.append(bird)
             del birds[i]
+            birds_length -= 1
             i -= 1
         else:
             bird.frames_lived += 1
@@ -99,13 +105,25 @@ def init_pygame_settings():
     pygame.init()
     pygame.font.init()
     pygame_font_style = pygame.font.SysFont('Comic Sans MS', 30)
+    slider_font_style = pygame.font.SysFont('Calibri', 15)
     pygame_screen = pygame.display.set_mode([const.game_width + (const.menu_width if const.neural_network_enabled else 0), const.game_height])
     pygame.display.set_caption("Neural Network Flappy Bird")
     # Load the bird image ----------------------------
     sourceFileDir = os.path.dirname(os.path.abspath(__file__))
     bird_img = pygame.image.load(os.path.join(sourceFileDir, "sprites", "Bird.png"))
     bird_img = pygame.transform.scale(bird_img, (const.bird_width, const.bird_height))
-    return pygame_font_style, pygame_screen, bird_img
+    return pygame_font_style, pygame_screen, bird_img, slider_font_style
+
+def init_sliders(): 
+    sliders = []
+    sliders.append(Slider((const.game_width + 10, 10, 200, 20), 1, 100, 1, 1, "Speed Multiplier", edit_speed_multiplier))
+    sliders.append(Slider((const.game_width + 10, 50, 200, 20), 1, 500, 1, 250, "Number of birds to duplicate", edit_num_birds))
+    sliders.append(Slider((const.game_width + 10, 90, 200, 20), 100, 400, 10, const.pipe_gap, "Pipe Gap", edit_pipe_gap))
+    sliders.append(Slider((const.game_width + 10, 130, 200, 20), 50, 250, 10, const.pipe_frequency, "Pipe Frequency", edit_pipe_freq))
+    sliders.append(Slider((const.game_width + 10, 170, 200, 20), 2, 15, 1, const.bird_jump_velocity, "Bird Jump Velocity", edit_bird_jump_velocity))
+    sliders.append(Slider((const.game_width + 10, 210, 200, 20), 1, 100, 1, const.mutation_chance * 100, "Mutation Chance", edit_mutation_chance))
+    sliders.append(Slider((const.game_width + 10, 250, 200, 20), 1, 100, 1, const.mutation_factor * 100, "Mutation Factor", edit_mutation_factor))
+    return sliders
 
 def move_pipes(pipes):
     for pipe in pipes:
@@ -113,7 +131,7 @@ def move_pipes(pipes):
         if pipe.off_screen() == True: 
             del pipes[0]
 
-def draw_screen(pygame_screen, pipes, birds, bird_img, pygame_font_style):
+def draw_screen(pygame_screen, pipes, birds, bird_img, pygame_font_style, sliders, slider_font_style, max_score, max_gen, current_gen):
     """Draws all of the objects required for the game creation, and the sleeps for the appropriate amount of time and flips the display
 
     Args:
@@ -125,18 +143,37 @@ def draw_screen(pygame_screen, pipes, birds, bird_img, pygame_font_style):
 
     Returns: None
     """
+
     pygame_screen.fill(const.background_colour)
     for pipe in pipes:
         pipe.draw(pygame_screen)
     for bird in birds:
         bird.draw(pygame_screen, bird_img)
     pygame.draw.rect(pygame_screen, const.grass_green, (0, const.game_height - const.floor_height, const.game_width, const.floor_height))
+    text = pygame_font_style.render(f"Score: {birds[0].score}", False, const.white)
+
     if const.neural_network_enabled == False:
-        text = pygame_font_style.render(f"Score: {birds[0].score}", False, const.white)
+        # text = pygame_font_style.render(f"Score: {birds[0].score}", False, const.white)
         pygame_screen.blit(text, (10, 10))
     else:
         pygame.draw.rect(pygame_screen, const.white, (const.game_width, 0, const.menu_width, const.game_height))
         pygame.draw.line(pygame_screen, const.black, (const.game_width, 0), (const.game_width, const.game_height), 2) # Border
+        pygame.draw.line(pygame_screen, const.black, (const.game_width, const.game_height / 2), (const.game_height + const.menu_width, const.game_height / 2), 2)
+        for slider in sliders:
+            slider.check_slider_status()
+            slider.draw(pygame_screen, slider_font_style)
+            slider.func(slider.get_val())
+
+        # Write to the statistic screen
+        text = slider_font_style.render(f"Score: {birds[0].score}", False, const.black)
+        pygame_screen.blit(text, (const.game_width + 10, (const.game_height / 2) + 10))
+        text = slider_font_style.render(f"Current Generation: {current_gen}", False, const.black)
+        pygame_screen.blit(text, (const.game_width + 10, (const.game_height / 2) + 50))
+        text = slider_font_style.render(f"Max Score: {max_score}", False, const.black)
+        pygame_screen.blit(text, (const.game_width + 10, (const.game_height / 2) + 90))
+        text = slider_font_style.render(f"Max Generation: {max_gen}", False, const.black)
+        pygame_screen.blit(text, (const.game_width + 10, (const.game_height / 2) + 130))
+
     sleep(1.0 / const.framerate)
     pygame.display.flip()
 
