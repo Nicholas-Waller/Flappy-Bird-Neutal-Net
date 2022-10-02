@@ -40,6 +40,8 @@ All constants for the game are defined in game-logic/Constants.py. There are a f
  - There are some fun ways to tweak the neural network on the fly. Some examples are training a bird on a really easy version of the game (increasing pipe gap and decreasing pipe frequency) and then modifying the game to be significantly harder once they get good at that version. You can also set the mutation factor and mutation chance higher to see how much faster the birds evolve at a given mutation chance/factor. There are tons of interesting expirements regarding evolution that you can do with the code :)
  - You can also try setting the number of birds to duplicate to 1. You will note that, although it will take forever, it should in theory, eventually learn. After setting it to 1, get a bird that is horrible. Now, set the number of birds to duplicate to a much higher value. It's interesting to see how all of the birds simulate the same behaviour, but then eventually, they start to differ in behaviour. 
 
-## Possible Improvements / Bugs Known / New Feature I want to Implement
+## Possible Improvements / Bugs Known / New Features I want to Implement
  - Update slider to be more responsive.
  - Implement multithreading for the matrix calculations that the birds are doing so that the game doesn't lag as severly when there are a large amount of birds.
+ - Allow a "get a good bird instantly" (basically run the simulation with the current settings without drawing anything to the screen).
+ - Allow a "save best bird of generation to file to load for later" feature. Potentially even letting the birds have their own name. 
